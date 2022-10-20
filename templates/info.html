@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="info">
+    {% for info in info_list %}
+        <div class="card">
+  <div class="card-header">
+        <b>publisher: </b>
+      {{ info.publisher_name }}
+
+  </div>
+  <div class="card-body">
+    <h4 class="card-title">{{ info.name }}</h4>
+    <p class="card-text">{{ info.info }}</p>
+  </div>
+</div>
+        <br/>
+    {% endfor %}
+</div>
+{% endblock %}

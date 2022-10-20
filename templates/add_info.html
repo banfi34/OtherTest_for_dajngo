@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>
+Add info
+</h1>
+    {% if submitted %}
+    Thanks for your info!
+    {% else %}
+    <form action="" method=POST>
+    {% csrf_token %}
+
+    {{ info.as_p }}
+
+    <input type="submit" value="submit" class="btn btn-secondary">
+    </form>
+{% endif %}
+{% endblock %}
