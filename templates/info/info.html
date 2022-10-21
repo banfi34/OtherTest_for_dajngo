@@ -4,15 +4,30 @@
     <div class="info">
     {% for info in info_list %}
         <div class="card">
+
   <div class="card-header">
+      {% if info.publisher_name %}
         <b>publisher: </b>
       {{ info.publisher_name }}
-
+    {% else %}
+        <b>publisher: </b>
+        Anonymous
+      {% endif %}
   </div>
+
+
   <div class="card-body">
     <h4 class="card-title">{{ info.name }}</h4>
     <p class="card-text">{{ info.info }}</p>
   </div>
+       {% if user.if_staff %}
+       <div class="card-footer text-muted">
+       <a href="{% url 'delete_info' info.id %}" class="btn btn-outline-danger btn-sm">
+        delete info
+       </a>
+       </div>
+        {% else %}
+        {% endif %}
 </div>
         <br/>
     {% endfor %}

@@ -23,4 +23,9 @@ from nav import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('playground.urls')),
+    path('members/', include('django.contrib.auth.urls')),
+    path('members/', include('members.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+admin.site.site_header = "My navbar"
+admin.site.site_title = "Navbar admin"

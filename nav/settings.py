@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'playground.apps.PlayConfig',
     'django.contrib.sessions',
+    'members'
 ]
 
 

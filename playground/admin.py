@@ -6,3 +6,5 @@ from .models import Info
 
 admin.site.register(WebsiteUser)
 admin.site.register(Info)
+
+

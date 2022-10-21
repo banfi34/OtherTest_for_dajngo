@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -13,8 +14,8 @@ class WebsiteUser(models.Model):
 
 class Info(models.Model):
     name = models.CharField('info name', max_length=120)
-    publisher_name = models.CharField('publisher name', max_length=60)
-    publisher = models.ForeignKey(WebsiteUser, blank=True, null=True, on_delete=models.CASCADE)
+    publisher_name = models.CharField('publisher name', blank=True, null=True, max_length=60)
+    publisher = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     info = models.TextField(max_length=2000)
 
     def __str__(self):
