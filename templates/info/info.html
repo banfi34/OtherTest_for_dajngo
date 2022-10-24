@@ -20,7 +20,7 @@
     <h4 class="card-title">{{ info.name }}</h4>
     <p class="card-text">{{ info.info }}</p>
   </div>
-       {% if user.if_staff %}
+       {% if user.is_staff or user.id == info.publisher_id %}
        <div class="card-footer text-muted">
        <a href="{% url 'delete_info' info.id %}" class="btn btn-outline-danger btn-sm">
         delete info

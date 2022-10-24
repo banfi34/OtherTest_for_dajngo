@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django_userforeignkey.models.fields import UserForeignKey
 
 
 # Create your models here.
@@ -16,7 +17,7 @@ class Info(models.Model):
     name = models.CharField('info name', max_length=120)
     publisher_name = models.CharField('publisher name', blank=True, null=True, max_length=60)
     publisher = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
-    info = models.TextField(max_length=2000)
+    info = models.TextField(max_length=10000)
 
     def __str__(self):
         return self.name

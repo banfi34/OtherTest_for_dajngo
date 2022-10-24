@@ -9,8 +9,8 @@ from .info import InfoForm
 
 
 def delete_info(request, info_id):
-    if request.user.is_staff or request.user.is_active:
-        info = Info.objects.get(pk=info_id)
+    info = Info.objects.get(pk=info_id)
+    if request.user.is_staff or request.user.id == info.publisher_id:
         info.delete()
         return redirect('info')
     else:
@@ -25,7 +25,7 @@ def base_html(request):
 
 # Create your views here.
 def info_html(request):
-    info_list = Info.objects.all().order_by('?')
+    info_list = Info.objects.all().order_by('id')
     return render(request, 'info/info.html',
                   {'info_list': info_list,
                    })
@@ -41,7 +41,10 @@ def add_info(request):
         if request.method == "POST":
             form = InfoForm(request.POST)
             if form.is_valid():
-                form.save()
+                info = form.save(commit=False)
+                info.publisher_id = request.user.id
+                info.save()
+
                 return HttpResponseRedirect('/add_info?submitted=True')
         else:
             form = InfoForm
