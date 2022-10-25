@@ -18,3 +18,22 @@ body {
     margin-bottom: 2rem;
 }
 
+
+.search-button i {
+    color: white;
+    margin-left: 10px;
+}
+
+.search-collapse {
+    margin-bottom: 2rem;
+}
+
+.search-collapse .card {
+    margin-top: -2.1rem;
+    border: none;
+    transition-duration: 0s;
+}
+
+.search-collapse .card-body {
+
+}

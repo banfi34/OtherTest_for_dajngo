@@ -1,6 +1,8 @@
 <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
-  <div class="container-xxl ">
-    <a class="navbar-brand " href="{% url 'home' %}">Navbar</a>
+  <div class="container">
+    <a class="navbar-brand " href="{% url 'home' %}">
+        <img src="https://www.tele-radio.com/app/themes/tele-radio/images/logotype-tele-radio.png" alt="Logo" width="160px" class="d-inline-block align-text-top">
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -9,6 +11,7 @@
         <li class="nav-item">
           <a class="nav-link" aria-current="page" href="{% url 'home' %}">Home</a>
         </li>
+          {% if user.is_staff %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             info
@@ -18,6 +21,13 @@
             <li><a class="dropdown-item" href="{% url 'add_info' %}">add info</a></li>
           </ul>
         </li>
+          {% else %}
+          <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'info' %}">info page</a>
+              </li>
+          </ul>
+          {% endif %}
       </ul>
       </div>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
@@ -38,6 +48,9 @@
           </li>
           {% endif %}
         </ul>
+        <a data-bs-toggle="collapse" data-bs-target="#searchCollapse" aria-expanded="false" aria-controls="searchCollapse" class="search-button" href="#">
+        <i class="bi bi-search"></i>
+        </a>
         </div>
-  </div>
+    </div>
 </nav>
