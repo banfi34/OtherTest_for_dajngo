@@ -26,8 +26,13 @@ body {
 
 .search-collapse {
     margin-bottom: 2rem;
+    position: sticky;
+    top: 4rem;
+    z-index: 1;
 }
 
 .search-collapse .card {
     margin-top: -2.1rem;
+    border: none;
+    transition: none !important;
 }

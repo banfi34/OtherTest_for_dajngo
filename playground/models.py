@@ -21,3 +21,13 @@ class Info(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Pages(models.Model):
+    page_name = models.CharField('page name', max_length=30)
+    page_image = models.ImageField(null=True, blank=True, upload_to="images/")
+    auth_users = models.ManyToManyField(User, blank=True)
+    web = models.URLField('website page', blank=True, null=True)
+
+    def __str__(self):
+        return self.page_name

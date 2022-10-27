@@ -26,14 +26,29 @@ body {
 
 .search-collapse {
     margin-bottom: 2rem;
+    position: sticky;
+    top: 4rem;
+    z-index: 1;
 }
 
 .search-collapse .card {
     margin-top: -2.1rem;
     border: none;
-    transition-duration: 0s;
+    transition: none !important;
 }
 
-.search-collapse .card-body {
+.pages .card-img{
+    width: 100%;
+    height: 80%;
+    object-fit: cover;
+}
 
+.pages a {
+    text-decoration: none;
+    color: black;
+}
+
+.welcome {
+    justify-content: center;
+    text-align: center;
 }

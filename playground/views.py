@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from .models import Info
-from .info import InfoForm
+from .models import Info, Pages
+from .forms import InfoForm
 
 
 def delete_info(request, info_id):
@@ -19,16 +19,78 @@ def delete_info(request, info_id):
         return redirect('info')
 
 
+def about_html(request):
+    if request.user.is_anonymous:
+        messages.add_message(request, messages.INFO,
+                             'You must be logged in')
+        return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        return render(request, 'about/about.html')
+
+
 def base_html(request):
-    return render(request, 'home.html')
+    if request.user.is_anonymous:
+        return render(request, 'homes/welcome.html')
+
+    if request.user.is_staff:
+        pages_list = Pages.objects.all().order_by('id')
+        return render(request, 'homes/home.html',
+                      {'pages_list': pages_list,
+                       })
+    else:
+        pages_list = Pages.objects.all().filter(auth_users__id=request.user.id).order_by('id')
+        return render(request, 'homes/home.html',
+                      {'pages_list': pages_list,
+                       })
+
+
+def base_info_html(request):
+    if request.user.is_anonymous:
+        messages.add_message(request, messages.INFO,
+                             'You must be logged in')
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    if request.user.is_staff:
+        pages_list = Pages.objects.all().order_by('id')
+        return render(request, 'homes/info/home_info.html',
+                      {'pages_list': pages_list,
+                       })
+    else:
+        pages_list = Pages.objects.all().filter(auth_users__id=request.user.id).order_by('id')
+        return render(request, 'homes/info/home_info.html',
+                      {'pages_list': pages_list,
+                       })
+
+
+def base_about_html(request):
+    if request.user.is_anonymous:
+        messages.add_message(request, messages.INFO,
+                             'You must be logged in')
+        return redirect(request.META.get('HTTP_REFERER'))
+
+    if request.user.is_staff:
+        pages_list = Pages.objects.all().order_by('id')
+        return render(request, 'homes/about/home_about.html',
+                      {'pages_list': pages_list,
+                       })
+    else:
+        pages_list = Pages.objects.all().filter(auth_users__id=request.user.id).order_by('id')
+        return render(request, 'homes/about/home_about.html',
+                      {'pages_list': pages_list,
+                       })
 
 
 # Create your views here.
 def info_html(request):
-    info_list = Info.objects.all().order_by('id')
-    return render(request, 'info/info.html',
-                  {'info_list': info_list,
-                   })
+    if request.user.is_anonymous:
+        messages.add_message(request, messages.INFO,
+                             'You must be logged in')
+        return redirect(request.META.get('HTTP_REFERER'))
+    else:
+        info_list = Info.objects.all().order_by('-id')
+        return render(request, 'info/info.html',
+                      {'info_list': info_list,
+                       })
 
 
 def add_info(request):
