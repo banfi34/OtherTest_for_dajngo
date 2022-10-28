@@ -1,8 +1,21 @@
 {% extends 'base/base.html' %}
-
 {% block content %}
-    <div class="info">
-    {% for info in info_list %}
+    <div class="search-page">
+    {% if searched %}
+        <h1>you searched For {{ searched }}</h1>
+        <br>
+        {% if not info and not pages %}
+            <h4>Cant find {{ searched }}</h4>
+            {% endif %}
+        {% for pages in pages %}
+            {% if user.id != pages.id %}
+           <a href="{{ pages.web }}"><p>{{ pages }} </p> </a>
+            {% endif %}
+        {% endfor %}
+
+
+        {% for info in info %}
+
         <div class="card">
 
   <div class="card-header">
@@ -28,8 +41,15 @@
        </div>
         {% else %}
         {% endif %}
-</div>
+        </div>
         <br/>
     {% endfor %}
-</div>
+    {% else %}
+        <h1>
+        Hey! you forgot to search!
+        </h1>
+    {% endif %}
+
+    </div>
+
 {% endblock %}

@@ -6,6 +6,15 @@ body {
   list-style: none;
 }
 
+.search-page {
+    justify-content: center;
+    text-align: center;
+}
+
+.search-page p:first-letter {
+    text-transform: capitalize;
+}
+
 .info h4:first-letter {
   text-transform: capitalize;
 }
@@ -39,8 +48,23 @@ body {
 
 .pages .card-img{
     width: 100%;
-    height: 80%;
+    height: 100%;
     object-fit: cover;
+
+}
+
+.pages .card {
+    width: 100%;
+    height: 100%;
+    border: black solid 3px;
+}
+
+.pages .card-header {
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
 }
 
 .pages a {

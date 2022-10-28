@@ -10,13 +10,22 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
   </head>
   <body>
+  {% if 'contact' in request.path %}
+  {% include 'navbars/contact/navbar_contact.html' %}
+  {% elif 'info' in request.path %}
+  {% include 'navbars/info/navbar_info.html' %}
+  {% elif 'about' in request.path %}
+  {% include 'navbars/about/navbar_about.html' %}
+  {% else  %}
   {% include 'navbars/navbar.html' %}
+  {% endif %}
   <div class="search-collapse">
   <div class="card collapse" id="searchCollapse">
   <div class="card-body bg-dark">
-    <form class="d-flex container" role="search">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
+    <form class="d-flex container" role="search" method="POST" action="{% url 'search' %}">
+        {% csrf_token %}
+      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="searched">
+      <button class="btn btn-outline-secondary" type="submit">Search</button>
     </form>
       </div>
   </div>

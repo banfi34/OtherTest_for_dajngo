@@ -19,78 +19,140 @@ def delete_info(request, info_id):
         return redirect('info')
 
 
-def about_html(request):
-    if request.user.is_anonymous:
-        messages.add_message(request, messages.INFO,
-                             'You must be logged in')
-        return redirect(request.META.get('HTTP_REFERER'))
+def search(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        pages_list = Pages.objects.filter(page_name__contains=searched)
+        info = Info.objects.filter(publisher_name__contains=searched).order_by('-id') \
+               or Info.objects.filter(name__contains=searched).order_by('-id')
+        return render(request, 'search/search.html',
+                      {'searched': searched,
+                       'pages': pages_list,
+                       'info': info})
+
     else:
+        return render(request, 'search/search.html',
+                      {})
+
+
+def about_html(request):
+    page = Pages.objects.get(pk=5)
+    if request.user.is_authenticated and page.auth_users.filter(id=request.user.id) or request.user.is_staff:
         return render(request, 'about/about.html')
+
+    else:
+        messages.add_message(request, messages.INFO,
+                             'You dont have access to this site')
+        return redirect('home')
+
+
+def contact_html(request):
+    page = Pages.objects.get(pk=6)
+    if request.user.is_authenticated and page.auth_users.filter(id=request.user.id) or request.user.is_staff:
+        return render(request, 'contact/contact.html')
+
+    else:
+        messages.add_message(request, messages.INFO,
+                             'You dont have access to this site')
+        return redirect('home')
 
 
 def base_html(request):
-    if request.user.is_anonymous:
+    if request.user.is_staff:
+        pages_list = Pages.objects.all().order_by('id')
+        return render(request, 'homes/home.html',
+                      {'pages_list': pages_list,
+                       })
+
+    elif request.user.is_authenticated and Pages.objects.filter(auth_users__id=request.user.id):
+        pages_list = Pages.objects.all().filter(auth_users__id=request.user.id).order_by('id')
+        return render(request, 'homes/home.html',
+                      {'pages_list': pages_list,
+                       })
+
+    else:
         return render(request, 'homes/welcome.html')
 
-    if request.user.is_staff:
-        pages_list = Pages.objects.all().order_by('id')
-        return render(request, 'homes/home.html',
-                      {'pages_list': pages_list,
-                       })
-    else:
-        pages_list = Pages.objects.all().filter(auth_users__id=request.user.id).order_by('id')
-        return render(request, 'homes/home.html',
-                      {'pages_list': pages_list,
-                       })
 
-
-def base_info_html(request):
-    if request.user.is_anonymous:
-        messages.add_message(request, messages.INFO,
-                             'You must be logged in')
-        return redirect(request.META.get('HTTP_REFERER'))
-
+def home_info_html(request):
+    page = Pages.objects.get(pk=4)
     if request.user.is_staff:
         pages_list = Pages.objects.all().order_by('id')
         return render(request, 'homes/info/home_info.html',
                       {'pages_list': pages_list,
                        })
-    else:
+
+    elif request.user.is_authenticated and page.auth_users.filter(id=request.user.id):
         pages_list = Pages.objects.all().filter(auth_users__id=request.user.id).order_by('id')
         return render(request, 'homes/info/home_info.html',
                       {'pages_list': pages_list,
                        })
 
-
-def base_about_html(request):
-    if request.user.is_anonymous:
+    else:
         messages.add_message(request, messages.INFO,
-                             'You must be logged in')
-        return redirect(request.META.get('HTTP_REFERER'))
+                             'You dont have access to this site')
+        return redirect('home')
 
+
+def home_contact_html(request):
+    page = Pages.objects.get(pk=6)
+    if request.user.is_staff:
+        pages_list = Pages.objects.all().order_by('id')
+        return render(request, 'homes/contact/home_contact.html',
+                      {'pages_list': pages_list,
+                       })
+
+    elif request.user.is_authenticated and page.auth_users.filter(id=request.user.id):
+        pages_list = Pages.objects.all().filter(auth_users__id=request.user.id).order_by('id')
+        return render(request, 'homes/contact/home_contact.html',
+                      {'pages_list': pages_list,
+                       })
+
+    else:
+        messages.add_message(request, messages.INFO,
+                             'You dont have access to this site')
+        return redirect('home')
+
+
+def home_about_html(request):
+    page = Pages.objects.get(pk=5)
     if request.user.is_staff:
         pages_list = Pages.objects.all().order_by('id')
         return render(request, 'homes/about/home_about.html',
                       {'pages_list': pages_list,
                        })
-    else:
+
+    elif request.user.is_authenticated and page.auth_users.filter(id=request.user.id):
         pages_list = Pages.objects.all().filter(auth_users__id=request.user.id).order_by('id')
         return render(request, 'homes/about/home_about.html',
                       {'pages_list': pages_list,
                        })
+
+    else:
+        messages.add_message(request, messages.INFO,
+                             'You dont have access to this site')
+        return redirect('home')
 
 
 # Create your views here.
 def info_html(request):
-    if request.user.is_anonymous:
-        messages.add_message(request, messages.INFO,
-                             'You must be logged in')
-        return redirect(request.META.get('HTTP_REFERER'))
-    else:
+    page = Pages.objects.get(pk=4)
+    if request.user.is_staff:
         info_list = Info.objects.all().order_by('-id')
         return render(request, 'info/info.html',
                       {'info_list': info_list,
                        })
+
+    elif request.user.is_authenticated and page.auth_users.filter(id=request.user.id):
+        info_list = Info.objects.all().order_by('-id')
+        return render(request, 'info/info.html',
+                      {'info_list': info_list,
+                       })
+
+    else:
+        messages.add_message(request, messages.INFO,
+                             'You dont have access to this site')
+        return redirect('home')
 
 
 def add_info(request):

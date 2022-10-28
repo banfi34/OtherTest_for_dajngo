@@ -1,15 +1,14 @@
-{% extends 'base_html/base.html' %}
+{% extends 'base/base.html' %}
 {% block content %}
     <div class="pages">
     <div class="row row-cols-1 row-cols-md-3 g-4">
     {% for pages in pages_list %}
         <div class="col">
-        <a href="{{ pages.web }}" >
-        <div class="card" style="width: 18rem; height: 18rem">
+        <a href="{{ pages.web }}">
+        <div class="card">
         <img src="{{ pages.page_image.url }}" alt="" class="card-img">
-  <div class="card-header" style="height: 20%">
+  <div class="card-header">
       <h4 class="card-title">
-    <b>Page: </b>
       {{ pages.page_name }}
       </h4>
   </div>

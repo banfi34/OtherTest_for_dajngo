@@ -1,4 +1,4 @@
-{% extends 'base_html/base.html' %}
+{% extends 'base/base.html' %}
 
 {% block content %}
 {% if form.errors %}
@@ -13,11 +13,15 @@ register
 <br/>
     <form action="{% url 'register_user' %}" method=POST>
     {% csrf_token %}
-    {{ form.as_p }}
+    Username:<br>
+  <input type="text" name="username" placeholder="Username" class="form-control"><br>
+  Password:<br>
+  <input type="password" name="password1" placeholder="Password" class="form-control"><br>
+ Password Confirmation:<br>
+  <input type="password" name="password2" placeholder="Confirm Password" class="form-control">
+        <br><br>
 
-
-    <input type="submit" value="submit" class="btn btn-secondary">
-
-    </form>
+                           <button type="submit" class="btn btn-secondary">Register</button>
+                       </form>
 
 {% endblock %}
