@@ -1,11 +1,9 @@
-from django.db.models.functions import Lower
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from .models import Info, Pages
 from .forms import InfoForm
+from django.core.paginator import Paginator
 
 
 def delete_info(request, info_id):
@@ -36,7 +34,7 @@ def search(request):
 
 
 def about_html(request):
-    page = Pages.objects.get(pk=5)
+    page = Pages.objects.get(page_name="about")
     if request.user.is_authenticated and page.auth_users.filter(id=request.user.id) or request.user.is_staff:
         return render(request, 'about/about.html')
 
@@ -47,7 +45,7 @@ def about_html(request):
 
 
 def contact_html(request):
-    page = Pages.objects.get(pk=6)
+    page = Pages.objects.get(page_name="contact")
     if request.user.is_authenticated and page.auth_users.filter(id=request.user.id) or request.user.is_staff:
         return render(request, 'contact/contact.html')
 
@@ -75,7 +73,7 @@ def base_html(request):
 
 
 def home_info_html(request):
-    page = Pages.objects.get(pk=4)
+    page = Pages.objects.get(page_name="info")
     if request.user.is_staff:
         pages_list = Pages.objects.all().order_by('id')
         return render(request, 'homes/info/home_info.html',
@@ -95,7 +93,7 @@ def home_info_html(request):
 
 
 def home_contact_html(request):
-    page = Pages.objects.get(pk=6)
+    page = Pages.objects.get(page_name="contact")
     if request.user.is_staff:
         pages_list = Pages.objects.all().order_by('id')
         return render(request, 'homes/contact/home_contact.html',
@@ -115,7 +113,7 @@ def home_contact_html(request):
 
 
 def home_about_html(request):
-    page = Pages.objects.get(pk=5)
+    page = Pages.objects.get(page_name="about")
     if request.user.is_staff:
         pages_list = Pages.objects.all().order_by('id')
         return render(request, 'homes/about/home_about.html',
@@ -136,17 +134,23 @@ def home_about_html(request):
 
 # Create your views here.
 def info_html(request):
-    page = Pages.objects.get(pk=4)
+    page = Pages.objects.get(page_name="info")
     if request.user.is_staff:
-        info_list = Info.objects.all().order_by('-id')
+
+        p = Paginator(Info.objects.all().order_by('-id'), 6)
+        page = request.GET.get('page')
+        infos = p.get_page(page)
+
         return render(request, 'info/info.html',
-                      {'info_list': info_list,
+                      {'infos': infos
                        })
 
     elif request.user.is_authenticated and page.auth_users.filter(id=request.user.id):
-        info_list = Info.objects.all().order_by('-id')
+        p = Paginator(Info.objects.all().order_by('-id'), 6)
+        page = request.GET.get('page')
+        infos = p.get_page(page)
         return render(request, 'info/info.html',
-                      {'info_list': info_list,
+                      {'infos': infos
                        })
 
     else:

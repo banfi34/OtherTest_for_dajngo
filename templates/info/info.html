@@ -2,7 +2,39 @@
 
 {% block content %}
     <div class="info">
-    {% for info in info_list %}
+    <nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-end">
+      {% if infos.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page=1"> <i class="bi bi-chevron-double-left"></i> </a></li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ infos.previous_page_number }}"> <i class="bi bi-chevron-left"></i> </a>
+    </li>
+          {% else %}
+    <li class="page-item disabled">
+      <a class="page-link" href="#"> <i class="bi bi-chevron-left"></i> </a>
+    </li>
+      {% endif %}
+  {% if infos.previous_page_number > 0 %}
+    <li class="page-item"><a class="page-link" href="?page={{ infos.previous_page_number }}">{{ infos.previous_page_number }}</a></li>
+  {% endif %}
+    <li class="page-item"><a class="page-link active" href="#">{{ infos.number }}</a></li>
+  {% if infos.next_page_number <= infos.paginator.num_pages %}
+    <li class="page-item"><a class="page-link" href="?page={{ infos.next_page_number }}">{{ infos.next_page_number }}</a></li>
+  {% endif %}
+  {% if infos.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ infos.next_page_number }}"> <i class="bi bi-chevron-right"></i> </a>
+    </li>
+      <li class="page-item"><a class="page-link" href="?page={{ infos.paginator.num_pages }}"> <i class="bi bi-chevron-double-right"></i> </a></li>
+      {% else %}
+    <li class="page-item disabled">
+      <a class="page-link" href="#"> <i class="bi bi-chevron-right"></i> </a>
+    </li>
+  {% endif %}
+  </ul>
+</nav>
+
+    {% for info in infos %}
         <div class="card">
 
   <div class="card-header">

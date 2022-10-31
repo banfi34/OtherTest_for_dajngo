@@ -1,9 +1,20 @@
+
 body {
   margin: 0;
+  font-family: "Lato", sans-serif;
 }
 
  ul {
   list-style: none;
+}
+
+.search-page {
+    justify-content: center;
+    text-align: center;
+}
+
+.search-page p:first-letter {
+    text-transform: capitalize;
 }
 
 .info h4:first-letter {
@@ -35,4 +46,35 @@ body {
     margin-top: -2.1rem;
     border: none;
     transition: none !important;
+}
+
+.pages .card-img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+
+.pages .card {
+    width: 100%;
+    height: 100%;
+    border: black solid 3px;
+}
+
+.pages .card-header {
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.pages a {
+    text-decoration: none;
+    color: black;
+}
+
+.welcome {
+    justify-content: center;
+    text-align: center;
 }
