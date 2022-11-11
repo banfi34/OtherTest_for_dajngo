@@ -1,3 +1,5 @@
+import datetime
+
 from django.db.models import Avg
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -20,7 +22,7 @@ def delete_info(request, info_id):
 
 def delete_review(request, review_id):
     review = InfoReview.objects.get(pk=review_id)
-    if request.user.is_staff:
+    if request.user.is_staff or request.user.id == review.user_id:
         review.delete()
         return redirect(request.META.get('HTTP_REFERER'))
     else:

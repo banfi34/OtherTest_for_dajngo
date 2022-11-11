@@ -59,6 +59,11 @@
         reviews
        </a>
         {% endif %}
+        {% if info.inforeview_set.count != 1 %}
+            {{ info.inforeview_set.count }} - Reviews
+            {% else %}
+            {{ info.inforeview_set.count }} - Review
+        {% endif %}
         </div>
 </div>
         <br/>
