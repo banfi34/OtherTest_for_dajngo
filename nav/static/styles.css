@@ -1,6 +1,5 @@
 
 body {
-  margin: 0;
   font-family: "Lato", sans-serif;
 }
 
@@ -39,7 +38,7 @@ body {
     margin-bottom: 2rem;
     position: sticky;
     top: 4rem;
-    z-index: 1;
+    z-index: 99;
 }
 
 .search-collapse .card {
@@ -77,4 +76,18 @@ body {
 .welcome {
     justify-content: center;
     text-align: center;
+}
+
+.review {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    position: relative;
+    top: 15rem;
+}
+
+.review .card{
+    justify-content: center;
+    align-content: center;
 }

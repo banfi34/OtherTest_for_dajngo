@@ -2,15 +2,14 @@
 {% block content %}
     <div class="search-page">
     {% if searched %}
-        <h1>you searched For {{ searched }}</h1>
+        <h1>you searched for {{ searched }}</h1>
         <br>
         {% if not info and not pages %}
             <h4>Cant find {{ searched }}</h4>
             {% endif %}
         {% for pages in pages %}
-            {% if user.id != pages.id %}
            <a href="{{ pages.web }}"><p>{{ pages }} </p> </a>
-            {% endif %}
+
         {% endfor %}
 
 
@@ -33,13 +32,17 @@
     <h4 class="card-title">{{ info.name }}</h4>
     <p class="card-text">{{ info.info }}</p>
   </div>
+        <div class="card-footer text-muted">
        {% if user.is_staff or user.id == info.publisher_id %}
-       <div class="card-footer text-muted">
        <a href="{% url 'delete_info' info.id %}" class="btn btn-outline-danger btn-sm">
         delete info
        </a>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <a href="{% url 'info_review' info.id %}" class="btn btn-outline-warning btn-sm">
+        reviews
+       </a>
        </div>
-        {% else %}
         {% endif %}
         </div>
         <br/>

@@ -1,17 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django_userforeignkey.models.fields import UserForeignKey
 
 
 # Create your models here.
-class WebsiteUser(models.Model):
-    first_name = models.CharField('first name', max_length=30)
-    last_name = models.CharField('last name', max_length=30)
-    email = models.EmailField('email')
-
-    def __str__(self):
-        return self.first_name + ' ' + self.last_name
-
 
 class Info(models.Model):
     name = models.CharField('info name', max_length=120)
@@ -31,3 +22,19 @@ class Pages(models.Model):
 
     def __str__(self):
         return self.page_name
+
+
+RATING = (
+    (1, '1'),
+    (2, '2'),
+    (3, '3'),
+    (4, '4'),
+    (5, '5'),
+)
+
+
+class InfoReview(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    info = models.ForeignKey(Info, on_delete=models.CASCADE)
+    review_text = models.TextField()
+    review_rating = models.CharField(choices=RATING, max_length=150)

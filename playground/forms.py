@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Info, Pages
+from .models import Info, InfoReview
 
 
 class InfoForm(ModelForm):
@@ -13,3 +13,9 @@ class InfoForm(ModelForm):
             'publisher_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your name'}),
             'info': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Information'})
         }
+
+
+class ReviewAdd(forms.ModelForm):
+    class Meta:
+        model = InfoReview
+        fields = ('review_text', 'review_rating')

@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load static %}
 
 {% block content %}
     <div class="info">
@@ -36,32 +37,38 @@
 
     {% for info in infos %}
         <div class="card">
-
   <div class="card-header">
       {% if info.publisher_name %}
         <b>publisher: </b>
       {{ info.publisher_name }}
-    {% else %}
-        <b>publisher: </b>
-        Anonymous
       {% endif %}
   </div>
-
 
   <div class="card-body">
     <h4 class="card-title">{{ info.name }}</h4>
     <p class="card-text">{{ info.info }}</p>
   </div>
+        <div class="card-footer text-muted">
        {% if user.is_staff or user.id == info.publisher_id %}
-       <div class="card-footer text-muted">
        <a href="{% url 'delete_info' info.id %}" class="btn btn-outline-danger btn-sm">
         delete info
        </a>
-       </div>
-        {% else %}
         {% endif %}
+        {% if user.is_authenticated %}
+        <a href="{% url 'info_review' info.id %}" class="btn btn-outline-warning btn-sm">
+        reviews
+       </a>
+        {% endif %}
+        </div>
 </div>
         <br/>
     {% endfor %}
+
 </div>
 {% endblock %}
+    <!-- Image Zoom -->
+<script src="{% static 'jquery.ez-plus.js' %}"></script>
+<script type="text/javascript">
+    $('#zoom_01').ezPlus();
+</script>
+

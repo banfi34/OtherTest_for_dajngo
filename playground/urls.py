@@ -11,6 +11,9 @@ urlpatterns = [
     path('info', views.info_html, name="info"),
     path('add_info', views.add_info, name="add_info"),
     path('search', views.search, name="search"),
-    path('delete_info/<info_id>', views.delete_info, name="delete_info")
+    path('save-review/<int:pid>', views.save_review, name='save-review'),
+    path('info_review/<int:id>', views.info_review, name='info_review'),
+    path('delete_info/<info_id>', views.delete_info, name="delete_info"),
+    path('delete_review/<review_id>', views.delete_review, name="delete_review")
 
 ]
