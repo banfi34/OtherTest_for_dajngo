@@ -1,5 +1,3 @@
-import datetime
-
 from django.db.models import Avg
 from django.shortcuts import render, redirect
 from django.contrib import messages

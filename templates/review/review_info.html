@@ -21,7 +21,7 @@
   </div>
         <!-- Reviews -->
         <div class="card-footer">
-			<h3 class="my-3">Reviews - <span class="avg-rating">{{avg_reviews.avg_rating}}</span>/5 <i class="fa fa-star text-warning"></i>
+			<h3 class="my-3">Reviews - <span class="avg-rating">{{avg_reviews.avg_rating|floatformat}}</span>/5 <i class="fa fa-star text-warning"></i>
 			</h3>
           {{ rev }} Reviews
 	{% if user.is_authenticated %}
@@ -69,13 +69,15 @@
 								{% endfor %}
 						  	</cite>
 						  </footer>
-                        {% if user.is_staff %}
+                        {% if user.is_staff or user.id == review.user_id %}
                         <a href="{% url 'delete_review' review.id %}" class="btn btn-outline-danger btn-sm">
                          delete info
                         </a>
                          {% endif %}
 						</blockquote>
+                            {% if not forloop.last %}
 						<hr />
+                            {% endif %}
 						{% endfor %}
 					{% else %}
 						<p class="no-data">Add First Review</p>
