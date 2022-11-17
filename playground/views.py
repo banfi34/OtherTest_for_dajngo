@@ -5,17 +5,18 @@ from django.http import HttpResponseRedirect, JsonResponse
 from .models import Info, Pages, InfoReview
 from .forms import InfoForm, ReviewAdd
 from django.core.paginator import Paginator
+from .filter import InfoFilter
 
 
 def delete_info(request, info_id):
     info = Info.objects.get(pk=info_id)
     if request.user.is_staff or request.user.id == info.publisher_id:
         info.delete()
-        return redirect('info')
+        return redirect(request.META.get('HTTP_REFERER'))
     else:
         messages.add_message(request, messages.INFO,
                              'You are not authorized!!')
-        return redirect('info')
+        return redirect(request.META.get('HTTP_REFERER'))
 
 
 def delete_review(request, review_id):
@@ -150,23 +151,42 @@ def home_about_html(request):
 # Create your views here.
 def info_html(request):
     pages = Pages.objects.get(page_name="info")
-
-    p = Paginator(Info.objects.all().order_by('-id'), 6)
+    info = Info.objects.all()
+    p = Paginator(info.order_by('-id'), 6)
     page = request.GET.get('page')
     infos = p.get_page(page)
 
     reviews = InfoReview.objects.all()
+    getTrue = True
+    myFilter = InfoFilter(request.GET, queryset=info)
+
+    if not myFilter.qs.exists():
+        getTrue = False
+
+    if request.GET.get('name') or request.GET.get('publisher_name'):
+        pg = Paginator(myFilter.qs.all().order_by('-id'), 6)
+        page = request.GET.get('page')
+        infos = pg.get_page(page)
+
+        if not getTrue:
+            messages.add_message(request, messages.INFO,
+                                 'Could not find what you searched for')
+            return redirect(request.META.get('HTTP_REFERER'))
 
     if request.user.is_staff:
         return render(request, 'info/info.html',
                       {'infos': infos,
-                       'reviews': reviews
+                       'reviews': reviews,
+                       'myFilter': myFilter,
+                       'getTrue': getTrue,
                        })
 
     elif request.user.is_authenticated and pages.auth_users.filter(id=request.user.id):
         return render(request, 'info/info.html',
                       {'infos': infos,
                        'reviews': reviews,
+                       'myFilter': myFilter,
+                       'getTrue': getTrue,
                        })
 
     else:

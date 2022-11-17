@@ -36,9 +36,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'jquery',
     'playground.apps.PlayConfig',
     'django.contrib.sessions',
-    'members'
+    'members',
+
+    'django_filters'
 ]
 
 MIDDLEWARE = [

@@ -1,6 +1,9 @@
+:root {
+    --primary-color: #F2F2F2
+}
 
 body {
-  font-family: "Lato", sans-serif;
+    font-family: "Lato", sans-serif;
 }
 
  ul {
@@ -87,4 +90,21 @@ body {
 
 .review footer {
     margin-top: 0;
+}
+
+.advanced-button {
+    color: black;
+    margin-left: 2px;
+}
+
+.info-collapse .card{
+    margin-bottom: 1rem;
+}
+
+#infoSearch {
+    transition: none;
+}
+
+.advanced-button i {
+    padding-left: 5px;
 }

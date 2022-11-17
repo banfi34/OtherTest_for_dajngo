@@ -1,7 +1,9 @@
+:root {
+    --primary-color: #F2F2F2
+}
 
 body {
-  margin: 0;
-  font-family: "Lato", sans-serif;
+    font-family: "Lato", sans-serif;
 }
 
  ul {
@@ -77,4 +79,29 @@ body {
 .welcome {
     justify-content: center;
     text-align: center;
+}
+
+.review {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+}
+
+.review footer {
+    margin-top: 0;
+}
+
+.advanced-button {
+    color: black;
+    margin-left: 2px;
+}
+
+.info-collapse .card{
+    margin-bottom: 1rem;
+    transition: none !important;
+}
+
+.advanced-button i {
+    padding-left: 5px;
 }

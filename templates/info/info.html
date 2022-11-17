@@ -1,14 +1,25 @@
 {% extends 'base/base.html' %}
+{% load lower_filter %}
 {% load static %}
-
+{% block scripts %}
+    <script src="{% static 'test.js' %}"></script>
+{% endblock %}
 {% block content %}
     <div class="info">
+    <div class="row">
+    <div class="col-sm">
+        <button id="click" type="button" data-bs-toggle="collapse" data-bs-target="#infoSearch" aria-expanded="false" aria-controls="infoSearch" class="advanced-button btn btn-outline-secondary" onclick="clickFunction()">
+        Advanced<i class="bi bi-chevron-down text-dark"></i>
+        </button>
+    </div>
+
+    <div class="col-sm">
     <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-end">
       {% if infos.has_previous %}
-          <li class="page-item"><a class="page-link" href="?page=1"> <i class="bi bi-chevron-double-left"></i> </a></li>
+          <li class="page-item"><a class="page-link" href="?{{ request.GET|remove_obsolete_pages }}&page=1"> <i class="bi bi-chevron-double-left"></i> </a></li>
     <li class="page-item">
-      <a class="page-link" href="?page={{ infos.previous_page_number }}"> <i class="bi bi-chevron-left"></i> </a>
+      <a class="page-link" href="?{{ request.GET|remove_obsolete_pages }}&page={{ infos.previous_page_number }}"> <i class="bi bi-chevron-left"></i> </a>
     </li>
           {% else %}
     <li class="page-item disabled">
@@ -16,17 +27,17 @@
     </li>
       {% endif %}
   {% if infos.previous_page_number > 0 %}
-    <li class="page-item"><a class="page-link" href="?page={{ infos.previous_page_number }}">{{ infos.previous_page_number }}</a></li>
+    <li class="page-item"><a class="page-link" href="?{{ request.GET|remove_obsolete_pages }}&page={{ infos.previous_page_number }}">{{ infos.previous_page_number }}</a></li>
   {% endif %}
     <li class="page-item"><a class="page-link active" href="#">{{ infos.number }}</a></li>
   {% if infos.next_page_number <= infos.paginator.num_pages %}
-    <li class="page-item"><a class="page-link" href="?page={{ infos.next_page_number }}">{{ infos.next_page_number }}</a></li>
+    <li class="page-item"><a class="page-link" href="?{{ request.GET|remove_obsolete_pages }}&page={{ infos.next_page_number }}">{{ infos.next_page_number }}</a></li>
   {% endif %}
   {% if infos.has_next %}
     <li class="page-item">
-      <a class="page-link" href="?page={{ infos.next_page_number }}"> <i class="bi bi-chevron-right"></i> </a>
+      <a class="page-link" href="?{{ request.GET|remove_obsolete_pages }}&page={{ infos.next_page_number }}"> <i class="bi bi-chevron-right"></i> </a>
     </li>
-      <li class="page-item"><a class="page-link" href="?page={{ infos.paginator.num_pages }}"> <i class="bi bi-chevron-double-right"></i> </a></li>
+      <li class="page-item"><a class="page-link" href="?{{ request.GET|remove_obsolete_pages }}&page={{ infos.paginator.num_pages }}"> <i class="bi bi-chevron-double-right"></i> </a></li>
       {% else %}
     <li class="page-item disabled">
       <a class="page-link" href="#"> <i class="bi bi-chevron-right"></i> </a>
@@ -34,7 +45,25 @@
   {% endif %}
   </ul>
 </nav>
+    </div>
 
+    </div>
+    <div class="info-collapse">
+  <div class="collapse" id="infoSearch">
+      <div class="card">
+  <div class="card-body">
+    <form method="get">
+        {{ myFilter.form }}
+        <td colspan="2">
+        <button class="btn btn-primary" type="submit">Search</button>
+        <input type="reset" class="btn btn-dark" value="Reset" id="reset"/>
+        </td>
+    </form>
+  </div>
+          </div>
+  </div>
+    </div>
+    {% if getTrue %}
     {% for info in infos %}
         <div class="card">
   <div class="card-header">
@@ -68,12 +97,10 @@
 </div>
         <br/>
     {% endfor %}
+    {% endif %}
 
 </div>
 {% endblock %}
-    <!-- Image Zoom -->
-<script src="{% static 'jquery.ez-plus.js' %}"></script>
-<script type="text/javascript">
-    $('#zoom_01').ezPlus();
-</script>
+
+
 

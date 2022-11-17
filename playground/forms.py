@@ -19,3 +19,9 @@ class ReviewAdd(forms.ModelForm):
     class Meta:
         model = InfoReview
         fields = ('review_text', 'review_rating')
+
+
+class InfoSecondForm(ModelForm):
+    class Meta:
+        model = Info
+        fields = '__all__'
