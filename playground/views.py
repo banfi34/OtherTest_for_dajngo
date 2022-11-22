@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from .models import Info, Pages, InfoReview
 from .forms import InfoForm, ReviewAdd
 from django.core.paginator import Paginator
-from .filter import InfoFilter
+from .filter import InfoFilter, ReviewFilter
 
 
 def delete_info(request, info_id):
@@ -19,10 +19,15 @@ def delete_info(request, info_id):
         return redirect(request.META.get('HTTP_REFERER'))
 
 
-def delete_review(request, review_id):
+def delete_review(request, review_id, info_id):
+    info = Info.objects.get(pk=info_id)
     review = InfoReview.objects.get(pk=review_id)
     if request.user.is_staff or request.user.id == review.user_id:
         review.delete()
+        avg_reviews = InfoReview.objects.filter(info=info).aggregate(avg_rating=Avg('review_rating'))
+        info.sumRev = avg_reviews['avg_rating']
+        info.save()
+
         return redirect(request.META.get('HTTP_REFERER'))
     else:
         messages.add_message(request, messages.INFO,
@@ -159,11 +164,12 @@ def info_html(request):
     reviews = InfoReview.objects.all()
     getTrue = True
     myFilter = InfoFilter(request.GET, queryset=info)
+    newFilter = ReviewFilter(request.GET, queryset=reviews)
 
-    if not myFilter.qs.exists():
+    if not myFilter.qs.exists() or not newFilter.qs.exists():
         getTrue = False
 
-    if request.GET.get('name') or request.GET.get('publisher_name'):
+    if request.GET.get('name') or request.GET.get('publisher_name') or request.GET.get('review_rating'):
         pg = Paginator(myFilter.qs.all().order_by('-id'), 6)
         page = request.GET.get('page')
         infos = pg.get_page(page)
@@ -179,6 +185,7 @@ def info_html(request):
                        'reviews': reviews,
                        'myFilter': myFilter,
                        'getTrue': getTrue,
+                       'newFilter': newFilter,
                        })
 
     elif request.user.is_authenticated and pages.auth_users.filter(id=request.user.id):
@@ -187,6 +194,7 @@ def info_html(request):
                        'reviews': reviews,
                        'myFilter': myFilter,
                        'getTrue': getTrue,
+                       'newFilter': newFilter,
                        })
 
     else:
@@ -239,6 +247,8 @@ def save_review(request, pid):
 
     # Fetch avg rating for reviews
     avg_reviews = InfoReview.objects.filter(info=info).aggregate(avg_rating=Avg('review_rating'))
+    info.sumRev = avg_reviews['avg_rating']
+    info.save()
     # End
 
     return redirect(request.META.get('HTTP_REFERER'), {'data': data})
@@ -265,7 +275,6 @@ def info_review(request, id):
     # End
 
     rev = InfoReview.objects.all().values_list('info_id', flat=True).filter(info_id=info).count()
-
     return render(request, 'review/review_info.html',
                   {'info': info,
                    'reviewForm': reviewForm,

@@ -70,7 +70,7 @@
 						  	</cite>
 						  </footer>
                         {% if user.is_staff or user.id == review.user_id %}
-                        <a href="{% url 'delete_review' review.id %}" class="btn btn-outline-danger btn-sm">
+                        <a href="{% url 'delete_review' review.id info.id %}" class="btn btn-outline-danger btn-sm">
                          delete info
                         </a>
                          {% endif %}

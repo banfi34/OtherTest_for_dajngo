@@ -9,6 +9,7 @@ class Info(models.Model):
     publisher_name = models.CharField('publisher name', blank=True, null=True, max_length=60)
     publisher = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
     info = models.TextField(max_length=10000)
+    sumRev = models.DecimalField(null=True, blank=True, decimal_places=1, max_digits=2)
 
     def __str__(self):
         return self.name
