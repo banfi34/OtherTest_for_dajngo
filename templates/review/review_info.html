@@ -71,7 +71,7 @@
 						  </footer>
                         {% if user.is_staff or user.id == review.user_id %}
                         <a href="{% url 'delete_review' review.id info.id %}" class="btn btn-outline-danger btn-sm">
-                         delete info
+                         delete Review
                         </a>
                          {% endif %}
 						</blockquote>

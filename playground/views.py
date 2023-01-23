@@ -157,7 +157,7 @@ def home_about_html(request):
 def info_html(request):
     pages = Pages.objects.get(page_name="info")
     info = Info.objects.all()
-    p = Paginator(info.order_by('-id'), 6)
+    p = Paginator(info.order_by('-sumRev'), 6)
     page = request.GET.get('page')
     infos = p.get_page(page)
 
@@ -166,13 +166,21 @@ def info_html(request):
     myFilter = InfoFilter(request.GET, queryset=info)
     newFilter = ReviewFilter(request.GET, queryset=reviews)
 
-    if not myFilter.qs.exists() or not newFilter.qs.exists():
+    if not myFilter.qs.exists():
         getTrue = False
 
     if request.GET.get('name') or request.GET.get('publisher_name') or request.GET.get('review_rating'):
-        pg = Paginator(myFilter.qs.all().order_by('-id'), 6)
-        page = request.GET.get('page')
-        infos = pg.get_page(page)
+        if request.GET.get('review_rating'):
+            pg = Paginator(myFilter.qs.filter(sumRev__startswith=request.GET.get('review_rating'))
+                           .all().order_by('-sumRev'), 6)
+            page = request.GET.get('page')
+            infos = pg.get_page(page)
+            if not myFilter.qs.filter(sumRev__startswith=request.GET.get('review_rating')).all():
+                getTrue = False
+        else:
+            pg = Paginator(myFilter.qs.all().order_by('-sumRev'), 6)
+            page = request.GET.get('page')
+            infos = pg.get_page(page)
 
         if not getTrue:
             messages.add_message(request, messages.INFO,
@@ -183,18 +191,18 @@ def info_html(request):
         return render(request, 'info/info.html',
                       {'infos': infos,
                        'reviews': reviews,
+                       'newFilter': newFilter,
                        'myFilter': myFilter,
                        'getTrue': getTrue,
-                       'newFilter': newFilter,
                        })
 
     elif request.user.is_authenticated and pages.auth_users.filter(id=request.user.id):
         return render(request, 'info/info.html',
                       {'infos': infos,
                        'reviews': reviews,
+                       'newFilter': newFilter,
                        'myFilter': myFilter,
                        'getTrue': getTrue,
-                       'newFilter': newFilter,
                        })
 
     else:
