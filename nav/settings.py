@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'playground.apps.PlayConfig',
     'django.contrib.sessions',
     'members',
-
     'django_filters'
 ]
 

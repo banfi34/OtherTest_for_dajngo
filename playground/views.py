@@ -1,3 +1,6 @@
+import time
+import asyncio
+
 from django.db.models import Avg
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -94,7 +97,7 @@ def base_html(request):
 
 
 def home_info_html(request):
-    page = Pages.objects.get(page_name="info")
+    page = Pages.objects.get(page_name="info_home")
     if request.user.is_staff:
         pages_list = Pages.objects.all().order_by('id')
         return render(request, 'homes/info/home_info.html',
